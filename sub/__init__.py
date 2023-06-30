@@ -57,7 +57,10 @@ def handle_message(event: MessageEvent) -> None:
     pattern = r"(\d+)時(\d+)分" 
     flag = False
     
-    if re.search(pattern, event.message.text):
+    if text_message.text == "アラームを設定":
+        reply_text = "何時に設定する？"
+
+    elif re.search(pattern, event.message.text):
         match = re.search(pattern, event.message.text)
 
         hour = match.group(1)
