@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 line-bot-sdk = "*"
 flask = "*"
+flake8 = "*"
+python-dotenv = "*"
+ngrok = "*"
 
 [dev-packages]
 
