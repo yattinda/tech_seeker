@@ -4,6 +4,11 @@ on:
   push:
     paths:
       - '*.py'
+  pull_request:
+    types: [opened, synchronize]
+    branches: ["main"]
+    paths:
+      - "**.py"
 
 jobs:
   flake8_py3:
