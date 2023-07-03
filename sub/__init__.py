@@ -54,7 +54,7 @@ def handle_message(event: MessageEvent) -> None:
     source: Source = event.source
     user_id: str = source.user_id
 
-    pattern = r"(\d+)時(\d+)分" 
+    pattern = r"(\d+)時(\d+)分"
     flag = False
     
     if text_message.text == "アラームを設定":
@@ -89,7 +89,7 @@ def handle_message(event: MessageEvent) -> None:
         reply_text = res_text.strip()
 
     line_bot_api.reply_message(
-        event.reply_token, 
+        event.reply_token,
         TextSendMessage(text=reply_text)
     )
 
