@@ -29,9 +29,11 @@ handler = WebhookHandler(channel_secret)
 
 chatgpt_instance_map: Dict[str, ChatGPTClient] = {}
 
+
 @app.route('/')
 def index():
     return 'Hello, World!'
+
 
 @app.route("/callback", methods=["POST"])
 def callback() -> str:
@@ -56,7 +58,7 @@ def handle_message(event: MessageEvent) -> None:
 
     pattern = r"(\d+)時(\d+)分"
     flag = False
-    
+
     if text_message.text == "アラームを設定":
         reply_text = "何時に設定する？"
 
@@ -78,7 +80,8 @@ def handle_message(event: MessageEvent) -> None:
             gpt_client = ChatGPTClient(model=Model.GPT35TURBO)
 
         gpt_client.add_message(
-            message=Message(role=Role.USER, content=f"20文字以内でツンデレの口調で答えて。{text_message.text}")
+            message=Message(role=Role.USER, content=f"20文字以内でツンデレの口調で答えて。\
+                            {text_message.text}")
         )
         res = gpt_client.create()
         chatgpt_instance_map[user_id] = gpt_client
