@@ -9,6 +9,8 @@ flask = "*"
 flake8 = "*"
 python-dotenv = "*"
 ngrok = "*"
+openai = "*"
+gunicorn = "*"
 
 [dev-packages]
 
