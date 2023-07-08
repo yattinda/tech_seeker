@@ -11,9 +11,10 @@ python-dotenv = "*"
 ngrok = "*"
 openai = "*"
 gunicorn = "*"
+"rpi.gpio" = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
-python_full_version = "3.10.4"
+python_version = "3.9"
+python_full_version = "3.9.2"

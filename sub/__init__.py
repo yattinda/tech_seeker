@@ -3,6 +3,7 @@ from typing import Dict
 import re
 import datetime
 import time
+import RPi.GPIO as GPIO
 
 from dotenv import load_dotenv
 from flask import Flask, abort, request
@@ -13,6 +14,11 @@ from linebot.models import MessageEvent, Source, TextMessage, TextSendMessage
 from sub.gpt.client import ChatGPTClient
 from sub.gpt.constants import Model, Role
 from sub.gpt.message import Message
+
+GPIO.setmode(GPIO.BCM)
+
+GPIO.cleanup()
+GPIO.setup(21, GPIO.OUT)
 
 load_dotenv(".env", verbose=True)
 
@@ -72,6 +78,7 @@ def handle_message(event: MessageEvent) -> None:
         start_sec = dt_now.hour*3600 + dt_now.minute*60 + dt_now.second
         end_sec = int(hour)*3600 + int(minute)*60
         dif = abs(end_sec - start_sec)
+        print("hour,minute",hour,minute)
         reply_text = "{}時{}分に設定したわよ.{}秒後に起きればいいってことよ".format(hour, minute, dif)
         flag = True
 
@@ -99,6 +106,12 @@ def handle_message(event: MessageEvent) -> None:
     if flag:
         # 目的の時間までの秒数をカウント
         time.sleep(dif)
+        GPIO.output(21, GPIO.HIGH)
+        time.sleep(1)
+        print("ロボ娘起動、起きろーー!!(Connect to Arduino)\n")
+        
+        GPIO.output(21, GPIO.LOW)
+        print("False")
         # ロボ娘起動
-        print("ロボ娘起動、起きろーー!!(spresenseにHTTP通信を送る)\n")
+        
         flag = False
