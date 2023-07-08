@@ -78,7 +78,7 @@ def handle_message(event: MessageEvent) -> None:
         start_sec = dt_now.hour*3600 + dt_now.minute*60 + dt_now.second
         end_sec = int(hour)*3600 + int(minute)*60
         dif = abs(end_sec - start_sec)
-        print("hour,minute",hour,minute)
+        print("hour,minute", hour, minute)
         reply_text = "{}時{}分に設定したわよ.{}秒後に起きればいいってことよ".format(hour, minute, dif)
         flag = True
 
@@ -109,9 +109,7 @@ def handle_message(event: MessageEvent) -> None:
         GPIO.output(21, GPIO.HIGH)
         time.sleep(1)
         print("ロボ娘起動、起きろーー!!(Connect to Arduino)\n")
-        
         GPIO.output(21, GPIO.LOW)
         print("False")
         # ロボ娘起動
-        
         flag = False
