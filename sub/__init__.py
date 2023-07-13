@@ -19,6 +19,8 @@ GPIO.setmode(GPIO.BCM)
 
 GPIO.cleanup()
 GPIO.setup(21, GPIO.OUT)
+GPIO.setup(20, GPIO.OUT)
+GPIO.setup(18,GPIO.IN)
 
 load_dotenv(".env", verbose=True)
 
@@ -34,6 +36,13 @@ line_bot_api = LineBotApi(access_token)
 handler = WebhookHandler(channel_secret)
 
 chatgpt_instance_map: Dict[str, ChatGPTClient] = {}
+
+def loop():
+    while True:
+        #receive the information from spresense
+        if GPIO.input(18):
+            print("arduino stop")
+            break;
 
 
 @app.route('/')
@@ -79,7 +88,7 @@ def handle_message(event: MessageEvent) -> None:
         end_sec = int(hour)*3600 + int(minute)*60
         dif = abs(end_sec - start_sec)
         print("hour,minute", hour, minute)
-        reply_text = "{}時{}分に設定したわよ.{}秒後に起きればいいってことよ".format(hour, minute, dif)
+        reply_text = "{}時{}分に設定した.{}秒後に起きればいい".format(hour, minute, dif)
         flag = True
 
     else:
@@ -87,7 +96,7 @@ def handle_message(event: MessageEvent) -> None:
             gpt_client = ChatGPTClient(model=Model.GPT35TURBO)
 
         gpt_client.add_message(
-            message=Message(role=Role.USER, content=f"20文字以内でツンデレの口調で答えて。\
+            message=Message(role=Role.USER, content=f"20文字以内で殺人鬼の口調で答えて。\
                             {text_message.text}")
         )
         res = gpt_client.create()
@@ -106,10 +115,16 @@ def handle_message(event: MessageEvent) -> None:
     if flag:
         # 目的の時間までの秒数をカウント
         time.sleep(dif)
+        print("qoooooooS")
         GPIO.output(21, GPIO.HIGH)
+        print("nyuuuu")
+        GPIO.output(20, GPIO.HIGH)
         time.sleep(1)
         print("ロボ娘起動、起きろーー!!(Connect to Arduino)\n")
+        
+        loop()
         GPIO.output(21, GPIO.LOW)
-        print("False")
-        # ロボ娘起動
+        GPIO.output(20, GPIO.LOW)
+        print("subetega owari!!")
+        
         flag = False
